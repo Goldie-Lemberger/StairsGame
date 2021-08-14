@@ -1,0 +1,65 @@
+/** 
+    Implements a graphical square. 
+*/
+class Square {
+
+    field int x, y; // screen location of the square's top-left corner
+    field int size; // length of this square, in pixels
+ 
+    /** 
+        Constructs a new square with a given location and size. 
+    */
+    constructor Square new(int Ax, int Ay, int Asize) {
+        let x= Random.randRange(511 - Asize);
+        let y = Ay;
+        let size = Asize;
+        do draw(y);
+        return this;
+    }
+ 
+    /** 
+        Disposes this square. 
+    */
+    method void dispose() {
+       do Memory.deAlloc(this);
+       return;
+    }
+ 
+    /** 
+        Draws the square on the screen. 
+    */
+    method void draw(int Ay) {
+        let x= Random.randRange(511 - (2*size));
+        let y = Ay;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + (2*size), y + size);
+        return;
+    }
+ 
+    /** 
+        Erases the square from the screen. 
+    */
+    method void erase() {
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + (size*2), y + size);
+        return;
+    }
+    /** 
+        Moves the square down by 2 pixels. 
+    */
+    method void moveDown() {
+       if ((y + size) < 254) {
+        //   do Screen.setColor(true);
+        //   do Screen.drawRectangle(x, y, x + (size*2), y + 1);
+            let y = y + 2;
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x, (y + size) - 1, x + (size*2), y + size);
+       }
+       return;
+    }
+
+    method int getX(){
+        return x;
+    }
+ }
+ 

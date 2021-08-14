@@ -1,0 +1,93 @@
+class MovingMan{
+    /**
+        This class is in charge of moving the man on screen 
+        according to the input received fron the keyboard.
+    */
+    field Man man;
+    field int width,up,key,speed;
+
+    /**
+        Initiates the place of the man on the bottom of the screen.
+    */
+    constructor MovingMan new(){
+        let width = 15;
+        let up =((255*32)-960);
+        let man = Man.new();
+        let key = Keyboard.keyPressed();
+        let speed = 100;
+        return this;
+    }
+
+    /**
+        dispose
+    */
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /** 
+        Redraws the man on the screen.
+    */
+    method void drawMan(){
+        do man.draw(width,up);
+        return;
+    }
+
+    /**
+        draws/erases the man on the screen, 
+        according to the key pressed on the keyboard.
+    */
+    method void run(int key){
+        if(key = 132){
+            if(width < 31 ){
+                do man.erase(width,up);
+                let width = width + 1 ;
+            }
+        }
+        if(key = 130){
+            if(width >0 ){
+                do man.erase(width,up);
+                let width = width - 1 ;
+            }
+        }
+        if(key = 131){
+            if(up - 480  > -1){
+                do man.erase(width,up);
+                let up = up - 480 ;
+            }
+        }
+        if(key = 133){
+            if(up + 960 < (255 * 32)){
+                do man.erase(width,up);
+                let up = up + 480 ;
+            }
+        }
+        do man.draw(width,up);
+        return;
+    }
+
+    /**
+        Increases the current speed of the game.
+    */
+    method void higherSpeed(){
+        if(speed - 10 > 0){
+            let speed = speed - 10;
+        }
+        return;
+    }
+
+    /**
+        Returns the horizontal position of the man on the screen.
+    */
+    method int getWidth(){
+        return width*16;
+    }
+
+    /**
+        Returns the vertical position of the man on the screen.
+    */
+    method int getHeight(){
+        return up/32;
+    }
+}

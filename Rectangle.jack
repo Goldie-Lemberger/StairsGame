@@ -1,0 +1,108 @@
+/** 
+   Implements a graphical square. 
+*/
+class Rectangle {
+   field Square whiteSquare;
+   field int x, y; // screen location of the square's top-left corner
+   field int height;
+   field int width; // length of this square, in pixels
+
+   /** 
+      Constructs a new square with a given location and size. 
+   */
+   constructor Rectangle new(int Ax, int Ay, int Aheight,int Awidth) {
+      let x = Ax;
+      let y = Ay;
+      let height = Aheight;
+      let width = Awidth;
+      let whiteSquare = Square.new(Ax,Ay,20);
+      do draw();
+      return this;
+   }
+
+   /** 
+      Disposes the square. 
+   */
+   method void dispose() {
+      do Memory.deAlloc(this);
+      return;
+   }
+
+   method int getY(){
+      return y;
+   }
+
+   method int getSquareX(){
+      return whiteSquare.getX();
+   }
+
+   /** 
+      Draws the square on the screen. 
+   */
+   method void draw() {
+      do Screen.setColor(true);
+      do Screen.drawRectangle(x, y, x + height, y + width);
+      do whiteSquare.draw(y);
+      return;
+   }
+
+   /** 
+      Erases the square from the screen. 
+   */
+   method void erase() {
+      do Screen.setColor(false);
+      do Screen.drawRectangle(x, y, x + height, y + width);
+      do whiteSquare.erase();
+      return;
+   }
+
+ 
+
+   /** 
+      Moves the square down by 2 pixels. 
+   */
+   method void moveDown() {
+      if ((y + width) < 254) {
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, y, x + height, y + 1);
+         let y = y + 2;
+         do Screen.setColor(true);
+         do Screen.drawRectangle(x, (y + width) - 1, x + height, y + width);
+         do whiteSquare.moveDown();
+      }
+      else{
+         do Screen.setColor(false);
+         do Screen.drawRectangle(x, y, x + height, y + 20);
+         let x = 0;
+         let y = 0;
+         do draw();
+      }
+      return;
+   }
+   method void moveRectangle() {
+      do moveDown();
+    
+      return;
+   }
+
+   /**
+      Moves rectangle on the screen until "Q" is pressed.
+   */
+   method void run(char string) {
+      var char key;  // the key currently pressed by the use     
+      var boolean exit;
+      let exit = false;
+      do Output.printString(string);
+      do Output.println();
+      while (~exit) {
+         // waits for a key to be pressed
+         let key = Keyboard.keyPressed();
+         if(key = 81){let exit = true;}
+         else{
+            do moveRectangle();
+         }
+     } // while
+     return;
+   }
+ 
+}

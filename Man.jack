@@ -1,0 +1,90 @@
+class Man {
+   /**
+      This class is in charge of drawing and erasing 
+      the shape of the man on the screen.
+   */
+	field int temp,memAddress,up;
+	constructor Man new(){
+		let memAddress = 16384;
+		return this;
+	}
+   
+   /**
+      Draws the shape of a man according to the places 
+      in the memory that are turned on
+   */
+   method void draw(int location,int down){ 
+      let temp = memAddress+location;
+      do Memory.poke(temp+down+0, 4080);
+      do Memory.poke(temp+down+32, 8184);
+      do Memory.poke(temp+down+64, 16380);
+      do Memory.poke(temp+down+96, 32766);
+      do Memory.poke(temp+down+128, 32766);
+      do Memory.poke(temp+down+160, 32766);
+      do Memory.poke(temp+down+192, 16380);
+      do Memory.poke(temp+down+224, 8184);
+      do Memory.poke(temp+down+256, 4080);
+      do Memory.poke(temp+down+288, 960);
+      do Memory.poke(temp+down+320, 960);
+      do Memory.poke(temp+down+352, 4080);
+      do Memory.poke(temp+down+384, 16380);
+      do Memory.poke(temp+down+416, 32766);
+      do Memory.poke(temp+down+448, -1);
+      do Memory.poke(temp+down+480, -1);
+      do Memory.poke(temp+down+512, 32766);
+      do Memory.poke(temp+down+544, -1);
+      do Memory.poke(temp+down+576, -4105);
+      do Memory.poke(temp+down+608, -12301);
+      do Memory.poke(temp+down+640, -4105);
+      do Memory.poke(temp+down+672, -1);
+      do Memory.poke(temp+down+704, 32767);
+      do Memory.poke(temp+down+736, 16376);
+      do Memory.poke(temp+down+768, 8176);
+      do Memory.poke(temp+down+800, 4080);
+      do Memory.poke(temp+down+832, 4080);
+      do Memory.poke(temp+down+864, 3824);
+      do Memory.poke(temp+down+896, 3696);
+      do Memory.poke(temp+down+928, 3696);
+      do Memory.poke(temp+down+960, 32382);
+      return;
+   }
+
+   /**
+      Erases the shape of the man from the screen.
+   */
+   method void erase(int location,int down){ 
+      let temp = memAddress+location;
+      do Memory.poke(temp+down+0, 0);
+      do Memory.poke(temp+down+32, 0);
+      do Memory.poke(temp+down+64, 0);
+      do Memory.poke(temp+down+96, 0);
+      do Memory.poke(temp+down+128, 0);
+      do Memory.poke(temp+down+160, 0);
+      do Memory.poke(temp+down+192, 0);
+      do Memory.poke(temp+down+224, 0);
+      do Memory.poke(temp+down+256, 0);
+      do Memory.poke(temp+down+288, 0);
+      do Memory.poke(temp+down+320, 0);
+      do Memory.poke(temp+down+352, 0);
+      do Memory.poke(temp+down+384, 0);
+      do Memory.poke(temp+down+416, 0);
+      do Memory.poke(temp+down+448, 0);
+      do Memory.poke(temp+down+480, 0);
+      do Memory.poke(temp+down+512, 0);
+      do Memory.poke(temp+down+544, 0);
+      do Memory.poke(temp+down+576, 0);
+      do Memory.poke(temp+down+608, 0);
+      do Memory.poke(temp+down+640, 0);
+      do Memory.poke(temp+down+672, 0);
+      do Memory.poke(temp+down+704, 0);
+      do Memory.poke(temp+down+736, 0);
+      do Memory.poke(temp+down+768, 0);
+      do Memory.poke(temp+down+800, 0);
+      do Memory.poke(temp+down+832, 0);
+      do Memory.poke(temp+down+864, 0);
+      do Memory.poke(temp+down+896, 0);
+      do Memory.poke(temp+down+928, 0);
+      do Memory.poke(temp+down+960, 0);
+      return;
+}
+}

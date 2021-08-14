@@ -1,0 +1,59 @@
+class Rectangles {
+    field Rectangle rect1,rect2;
+    static int speed,level;
+
+    /**
+        Constructs 2 bricks on the screen.
+    */
+    constructor Rectangles new(){
+        let rect1 = Rectangle.new(0,0+(255/2)*0,511,20);
+        let rect2 = Rectangle.new(0,0+(255/2)*1,511,20);
+        let speed = 100;
+        let level =1;
+        return this;
+    }
+
+    /**
+        Dispose
+    */
+    method void dispose(){
+        do rect1.dispose();
+        do rect2.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /**
+        Draws the bricks on the screen
+    */
+    method void drawRects(){
+        do Sys.wait(speed);
+        do rect1.moveRectangle();
+        do rect2.moveRectangle();
+        return;
+    }
+
+    /**
+        Returns the locations of the bricks on the screen.
+    */
+    method Array getLocations(){
+        var Array locations;
+        let locations = Array.new(4);
+        let locations[0] = rect1.getY();
+        let locations[1] = rect1.getSquareX();
+        let locations[2] = rect2.getY();
+        let locations[3] = rect2.getSquareX();
+        return locations;
+    }
+
+    /**
+        Increases the level of the game by 1, and the speed.
+    */
+    method void setLevel(){
+        let level = level + 1;
+        if((speed -15) > 24){ 
+            let speed = speed -15;
+        }       
+       return;
+    }
+}

@@ -1,0 +1,11 @@
+/**
+    Runs the game.
+*/
+class Main {
+    function void main() {
+        var PlayGame game;
+        let game = PlayGame.new();
+        do game.start();
+        return;
+    }
+}

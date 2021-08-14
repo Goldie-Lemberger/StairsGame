@@ -1,0 +1,229 @@
+class PlayGame{
+    /**
+        This class coordinates between all the parts of the game.
+    */
+    field MovingMan man;
+    field Man startMen;
+    field Rectangles game;
+    field int key,manXPos,manYPos,level,passedThrough;
+    field Array linePositions;
+    field boolean gameOver;
+
+    /**
+        Initaites the game.
+    */
+    constructor PlayGame new(){
+        let level =0;
+        let passedThrough =0;
+        return this;
+    }
+
+    /**
+        dispose
+    */
+    method void dispose() {
+        do man.dispose();
+        do game.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    /**
+        Prints instructions for the game on the screen, 
+        and starts the game when "S" is pressed on the keyboard
+    */
+    method void start(){
+        let startMen = Man.new();
+        do startMen.draw(15,(255*32)-960);
+        do startMen.draw(10,(255*32)-960);
+        do startMen.draw(20,(255*32)-960);
+        do startMen.draw(25,(255*32)-960);
+        do startMen.draw(5,(255*32)-960);
+        do startMen.draw(30,(255*32)-960); 
+        do startMen.draw(0,(255*32)-960);
+        do Output.moveCursor(6,22);
+        do Output.printString("The stairs game.");
+        do Output.println();
+        do Output.moveCursor(8,20);
+        do Output.printString(" To start, press S");
+        do Output.println();
+        do Output.moveCursor(10,6);
+        do Output.printString("At each stage black bricks come down with a passage way");
+        do Output.println();
+        do Output.moveCursor(11,10);
+        do Output.printString("It is only allowed to pass in the passage way");
+        do Output.println();
+        do Output.moveCursor(12,15);
+        do Output.printString(" The more stairs you go through");
+        do Output.println();
+        do Output.moveCursor(13,5);
+        do Output.printString("The faster the speed increases and the levels increase");
+        do Output.println();
+        do Output.moveCursor(15,16);
+        do Output.printString("by: Chava Neiman - 567374928");
+        do Output.println();
+        do Output.moveCursor(16,20);
+        do Output.printString("Tammy Furman - 212224687");
+        do Output.println();
+        do Output.moveCursor(17,20);
+        do Output.printString("Goldie Lemberger - 212369060");
+        do Output.println();
+        while(~(key = 83)){
+            let key = Keyboard.keyPressed();
+        }
+        do Screen.clearScreen();
+        do resetGame();
+        do play();
+        return;
+    }
+
+    /**
+        runs the game:
+            (displays the moving bricks,and man on the screen)
+            when "P" is pressed the game is paused until any other key is pressed.
+            when the man collides into a brick the game is over.
+    */
+    method void play(){
+        let gameOver = false;
+        do SpriteManager.draw_title_getready(10+(32*80));
+        do man.drawMan();
+        while(~(key = 81) & ~(gameOver)){
+            let key = Keyboard.keyPressed();
+            while(key=80){
+                let key = Keyboard.keyPressed();
+                do Output.moveCursor(11,20);
+                do Output.printString("Press any key to continue.");
+                do Output.println();
+                while(key=0)
+                {let key = Keyboard.keyPressed();}
+            }
+            do man.run(key);
+            do game.drawRects();
+            do printLevel();
+            if(collisions()){
+                let gameOver = true;
+                do collided();
+            }
+        }
+        while(true){
+            let key = Keyboard.keyPressed();
+            if(key = 81){
+                return;
+            }
+            if(key = 32){
+                // do dispose();
+                do Screen.clearScreen();
+                do resetGame();
+                do play();
+            }
+        }
+        return;
+    }
+    
+    /** 
+        Resets the game
+    */
+    method void resetGame(){
+        let man = MovingMan.new();
+        let game = Rectangles.new();
+        let linePositions = Array.new(4);
+        let level = 0;
+        return;
+    }
+
+    /**
+    Checks if the man collides into any brick
+    */
+    method boolean collisions(){
+        let linePositions= game.getLocations();
+        let manXPos = man.getWidth();
+        let manYPos = man.getHeight();
+        if((manYPos > (linePositions[0]-31)) & (manYPos < (linePositions[0]+19))){
+            if((manXPos < (linePositions[1])) | (manXPos > (linePositions[1]+25))){
+                return true;
+            }
+            else{
+                let passedThrough = passedThrough +1;
+                if(passedThrough=40){
+                    let level = level +1;
+                let passedThrough =0;
+                }
+                return false;
+            }
+            
+        }
+        if((manYPos > (linePositions[2]-31)) & (manYPos < (linePositions[2]+19))){
+            if((manXPos < (linePositions[3])) | (manXPos > (linePositions[3]+25))){
+                return true;
+            } else{
+                let passedThrough = passedThrough +1;
+                if(passedThrough=40){
+                    do game.setLevel();
+                    let level = level +1;
+                    let passedThrough = 0;
+                }
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+        Prints the current level of the game onto the screen.
+    */
+    method void printLevel(){
+        if (level = 0) {
+            do SpriteManager.draw_digit0(512);
+        } else { 
+            if (level = 1) {
+                do SpriteManager.draw_digit1(512);
+            } else { 
+                if (level = 2) {do SpriteManager.draw_digit2(512);
+                } else { 
+                    if (level = 3) {do SpriteManager.draw_digit3(512);
+                    } else { 
+                        if (level = 4) {do SpriteManager.draw_digit4(512);
+                        } else { 
+                            if (level = 5) {do SpriteManager.draw_digit5(512);
+                            } else{
+                                do SpriteManager.draw_title_win(10+(32*80));
+                                do Output.moveCursor(14,21);
+                                do Output.printString("New Game: press space");
+                                do Output.println();
+                                do Output.moveCursor(15,26);
+                                do Output.printString("Quit: press Q");
+                                do Output.println();
+                                while(true){
+                                    let key = Keyboard.keyPressed();
+                                    if(key = 81){
+                                        return;
+                                    }
+                                    if(key = 32){
+                                        do Screen.clearScreen();
+                                        do resetGame();
+                                        do play();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return;
+     }
+
+    /**
+       Deals with the game after there was a collision.
+    */
+    method void collided(){
+        do SpriteManager.draw_title_gameover(10+(32*100));
+        do Output.moveCursor(14,21);
+        do Output.printString("New Game: press space");
+        do Output.println();
+        do Output.moveCursor(15,26);
+        do Output.printString("Quit: press Q");
+        do Output.println();
+        return;
+    }
+}
